@@ -1,0 +1,3 @@
+{
+  "*.ts": ["stylelint", "prettier --check"]
+}
