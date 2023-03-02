@@ -11,14 +11,13 @@ import {
   TaskLabel,
   TaskSubmit,
 } from './components';
-
-const TODOS = {
-  title: 'to do list',
-  tasks: [{ name: 'Start a new pen' }, { name: 'Read a book' }, { name: 'Meeting with team' }],
-};
+import { useTodos } from './store';
 
 function App() {
-  const [todos, setTodos] = useState(TODOS);
+  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos();
+
+  console.log('🚀 ~ file: App.tsx:18 ~ App ~ todos:', todos);
+
   const [input, setInput] = useState('');
 
   return (
@@ -37,31 +36,24 @@ function App() {
           title="Add Task"
           onClick={() => {
             if (input) {
-              setTodos({
-                ...todos,
-                tasks: [...todos.tasks, { name: input }],
-              });
+              addTodo(input);
               setInput('');
             }
           }}
         />
       </TaskAdd>
       <ul>
-        {todos.tasks.map((todo, index) => (
+        {todos.map((todo, index) => (
           <TaskItem v-for="task in tasks" key={index}>
             <TaskLabel>
-              <TaskCheckbox type="checkbox" />
-              <span>{todo.name}</span>
+              <TaskCheckbox
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              <span>{todo.title}</span>
             </TaskLabel>
-            <DeleteBtn
-              title="Delete Task"
-              onClick={() =>
-                setTodos({
-                  ...todos,
-                  tasks: todos.tasks.filter((_, id) => index !== id),
-                })
-              }
-            />
+            <DeleteBtn title="Delete Task" onClick={() => deleteTodo(todo.id)} />
           </TaskItem>
         ))}
       </ul>

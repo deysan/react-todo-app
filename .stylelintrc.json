@@ -8,8 +8,9 @@
   "plugins": ["stylelint-order"],
   "overrides": [
     {
-      "files": ["**/*.tsx"],
+      "files": ["**/*.tsx", "**/*.ts"],
       "customSyntax": "@stylelint/postcss-css-in-js"
     }
-  ]
+  ],
+  "customSyntax": "postcss-less"
 }
