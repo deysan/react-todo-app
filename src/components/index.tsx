@@ -1,0 +1,9 @@
+export { default as Container } from './Container';
+export { default as Header } from './Header';
+export { default as TaskAdd } from './TaskAdd';
+export { default as TaskInput } from './TaskInput';
+export { default as TaskSubmit } from './TaskSubmit';
+export { default as TaskItem } from './TaskItem';
+export { default as TaskLabel } from './TaskLabel';
+export { default as TaskCheckbox } from './TaskCheckbox';
+export { default as DeleteBtn } from './DeleteBtn';

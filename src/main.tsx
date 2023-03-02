@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100vh;
     margin: 0;
-    padding: 16px;
+    padding: 1em;
     overflow: hidden;
     font-family: "DM Sans", sans-serif;
     background-image: linear-gradient(
