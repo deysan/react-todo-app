@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import {
   Container,
   DeleteBtn,
@@ -12,13 +11,34 @@ import {
   TaskSubmit,
 } from './components';
 import { useTodos } from './store';
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd';
+
+const reorder = <T,>(list: Array<T>, startIndex: number, endIndex: number) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 function App() {
-  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos();
+  const { todos, addTodo, toggleTodo, deleteTodo, sortTodos } = useTodos();
 
-  console.log('🚀 ~ file: App.tsx:18 ~ App ~ todos:', todos);
+  console.log('🚀 ~ file: App.tsx ~ todos:', todos);
 
   const [input, setInput] = useState('');
+
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
+
+    if (!destination) return;
+
+    if (destination.index === source.index) return;
+
+    const _todos = reorder(todos, source.index, destination.index);
+
+    sortTodos(_todos);
+  };
 
   return (
     <Container>
@@ -42,21 +62,37 @@ function App() {
           }}
         />
       </TaskAdd>
-      <ul>
-        {todos.map((todo, index) => (
-          <TaskItem v-for="task in tasks" key={index}>
-            <TaskLabel>
-              <TaskCheckbox
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <span>{todo.title}</span>
-            </TaskLabel>
-            <DeleteBtn title="Delete Task" onClick={() => deleteTodo(todo.id)} />
-          </TaskItem>
-        ))}
-      </ul>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="list">
+          {provided => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {todos.map((todo, index) => (
+                <Draggable key={todo.id} draggableId={todo.id} index={index}>
+                  {provided => (
+                    <TaskItem
+                      v-for="task in tasks"
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <TaskLabel>
+                        <TaskCheckbox
+                          type="checkbox"
+                          checked={todo.completed}
+                          onChange={() => toggleTodo(todo.id)}
+                        />
+                        <span>{todo.title}</span>
+                      </TaskLabel>
+                      <DeleteBtn title="Delete Task" onClick={() => deleteTodo(todo.id)} />
+                    </TaskItem>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </Container>
   );
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const TaskItem = styled.li`
+const TaskItem = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
