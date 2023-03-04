@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const TaskAdd = styled.form`
   margin-bottom: 1.5rem;
   display: flex;
-  height: 40px;
+  align-items: center;
+  height: 50px;
   font-size: 1rem;
 `;
 

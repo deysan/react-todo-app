@@ -68,10 +68,11 @@ function App() {
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {todos.map((todo, index) => (
                 <Draggable key={todo.id} draggableId={todo.id} index={index}>
-                  {provided => (
+                  {(provided, snapshot) => (
                     <TaskItem
                       v-for="task in tasks"
                       ref={provided.innerRef}
+                      isDragging={snapshot.isDragging}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                     >

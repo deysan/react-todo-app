@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const TaskInput = styled.input`
   width: 100%;
+  height: 100%;
   margin-right: 1rem;
   padding: 0 0.5rem;
   font-size: 1rem;
