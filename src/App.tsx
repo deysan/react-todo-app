@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Container,
   DeleteBtn,
@@ -22,7 +22,7 @@ const reorder = <T,>(list: Array<T>, startIndex: number, endIndex: number) => {
 };
 
 function App() {
-  const { todos, addTodo, toggleTodo, deleteTodo, sortTodos } = useTodos();
+  const { todos, addTodo, toggleTodo, deleteTodo, sortTodos, fetchTodos } = useTodos();
 
   console.log('🚀 ~ file: App.tsx ~ todos:', todos);
 
@@ -39,6 +39,10 @@ function App() {
 
     sortTodos(_todos);
   };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   return (
     <Container>
@@ -67,7 +71,7 @@ function App() {
           {provided => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               {todos.map((todo, index) => (
-                <Draggable key={todo.id} draggableId={todo.id} index={index}>
+                <Draggable key={todo.id} draggableId={String(todo.id)} index={index}>
                   {(provided, snapshot) => (
                     <TaskItem
                       v-for="task in tasks"

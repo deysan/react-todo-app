@@ -16,6 +16,7 @@ type TodoStore = {
   toggleTodo: (todoId: string) => void;
   deleteTodo: (todoId: string) => void;
   sortTodos: (todos: Todo[]) => void;
+  fetchTodos: () => void;
 };
 
 export const useTodos = create<TodoStore>()(
@@ -43,6 +44,21 @@ export const useTodos = create<TodoStore>()(
             todos: get().todos.filter(todo => todo.id !== todoId),
           }),
         sortTodos: todos => set({ todos }),
+        fetchTodos: async () => {
+          set({ loading: true });
+
+          try {
+            const res = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
+
+            if (!res.ok) throw new Error('Failed to fetch! Try again.');
+
+            set({ todos: await res.json(), error: null });
+          } catch (error) {
+            set({ error: (error as Error).message });
+          } finally {
+            set({ loading: false });
+          }
+        },
       }),
       { name: 'todos' },
     ),

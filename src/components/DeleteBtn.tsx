@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const DeleteBtn = styled.span`
   display: block;
+  flex-shrink: 0;
   width: 16px;
   height: 16px;
   margin-left: auto;
